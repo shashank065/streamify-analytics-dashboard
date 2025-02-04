@@ -15,6 +15,7 @@ interface RevenueDistributionChartProps {
   data: RevenueSource[];
 }
 
+
 const COLORS = ['#2563eb', '#16a34a', '#dc2626', '#eab308', '#6366f1'];
 
 const CustomTooltip = ({ active, payload }: any) => {

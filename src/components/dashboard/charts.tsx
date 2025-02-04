@@ -6,7 +6,6 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, Legend, ResponsiveContai
 import { format } from "date-fns"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
-import { useTheme } from "next-themes"
 import { Stream } from "@/types"
 import { generateMockData } from "@/lib/mock-data"
 import { LoadingSpinner } from "@/components/ui/loading-spinner"
@@ -15,6 +14,7 @@ import { ErrorFallback } from "@/components/ui/error-fallback"
 import { DatePickerWithRange } from "@/components/dashboard/date-picker"
 import { subMonths } from "date-fns"
 import { DateRange } from "react-day-picker"
+import { CustomPayload, ActiveShapeProps } from "@/app/types/dashboard"
 
 // Chart configuration following shadcn patterns
 const chartConfig = {
@@ -57,7 +57,7 @@ const chartConfig = {
 }
 
 // Add this renderActiveShape function for interactive pie chart
-const renderActiveShape = (props: any) => {
+const renderActiveShape = (props: ActiveShapeProps) => {
   const {
     cx, cy, innerRadius, outerRadius, startAngle, endAngle,
     fill, payload, percent, value, name
@@ -106,17 +106,14 @@ const renderActiveShape = (props: any) => {
 };
 
 // Add CustomTooltip type and component
-type CustomTooltipProps = {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
-}
-
-const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
+const CustomTooltip = ({ active, payload }: { 
+  active?: boolean; 
+  payload?: CustomPayload[] 
+}) => {
   if (!active || !payload) return null;
   return (
     <div className="rounded-lg border bg-background p-2 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-      <p className="text-sm font-medium">{label}</p>
+      <p className="text-sm font-medium">{payload[0]?.name}</p>
       {payload.map((entry) => (
         <div key={entry.name} className="flex items-center gap-2 mt-1">
           <div 
@@ -149,7 +146,6 @@ const chartStyles = {
 }
 
 export const Charts = () => {
-  const { theme } = useTheme()
   const { userGrowthData, revenueSources, topSongs, setRecentStreams } = useDashboardStore()
   const [selectedRevenue, setSelectedRevenue] = useState<string | null>(null)
   const [activeIndex, setActiveIndex] = useState(0);
@@ -205,11 +201,6 @@ export const Charts = () => {
       setRecentStreams(mockData.recentStreams)
     }
   }
-
-  // Add state for active pie sector
-  const onPieEnter = (_: any, index: number) => {
-    setActiveIndex(index);
-  };
 
   useEffect(() => {
     // Simulate data loading
@@ -293,7 +284,7 @@ export const Charts = () => {
               <PieChart>
                 <Pie
                   activeIndex={activeIndex}
-                  activeShape={renderActiveShape}
+                  activeShape={(props: unknown) => renderActiveShape(props as ActiveShapeProps)}
                   data={formattedRevenueSources}
                   cx="50%"
                   cy="50%"

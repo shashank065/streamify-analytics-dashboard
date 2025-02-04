@@ -13,8 +13,14 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-interface TopSongsChartProps {
-  data: TopSong[];
+interface SongData {
+  name: string;
+  streams: number;
+  artist: string;
+}
+
+interface ChartProps {
+  data: SongData[];
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -34,7 +40,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export const TopSongsChart = ({ data }: TopSongsChartProps) => {
+export const TopSongsChart = ({ data }: ChartProps) => {
   return (
     <ResponsiveContainer width="100%" height={400}>
       <BarChart

@@ -34,10 +34,10 @@ export default function DashboardPage() {
         })));
         setTopSongs(mockData.topSongs);
         setRecentStreams(mockData.recentStreams);
-      } catch (error) {
+      } catch (_err) {
         toast({
           title: "Error",
-          description: "Failed to load dashboard data",
+          description: "Failed to fetch dashboard data",
           variant: "destructive",
         });
       } finally {
@@ -46,7 +46,7 @@ export default function DashboardPage() {
     };
 
     fetchData();
-  }, []);
+  }, [setKeyMetrics, setRecentStreams, setRevenueSources, setTopSongs, setUserGrowthData, toast]);
 
   if (isLoading) {
     return <LoadingSpinner />;

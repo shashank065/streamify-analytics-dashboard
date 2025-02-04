@@ -5,17 +5,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, Music2, DollarSign, Trophy, TrendingUp } from "lucide-react"
 import { motion } from "framer-motion"
 
+interface MetricCardProps {
+  title: string;
+  value: string | number;
+  description?: string;
+  icon: React.ElementType;
+}
+
 const MetricCard = ({ 
   title, 
   value, 
   description, 
   icon: Icon 
-}: { 
-  title: string
-  value: string
-  description: string
-  icon: any
-}) => (
+}: MetricCardProps) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     transition={{ type: "spring", stiffness: 300 }}

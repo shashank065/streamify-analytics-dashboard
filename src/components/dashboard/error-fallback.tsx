@@ -1,3 +1,5 @@
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+
 export function ErrorFallback({ error }: { error: Error }) {
   return (
     <Card className="p-6">
